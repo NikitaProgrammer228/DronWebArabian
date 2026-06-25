@@ -3,753 +3,846 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مركز ماكسيم كوندراتييف للتدريب على الطائرات بدون طيار | دورات الطيران المسيّر</title>
-  <meta name="description" content="التدريب والدورات ورفع الكفاءة في تخصصات الطائرات بدون طيار: مشغّل طائرات مسيّرة، مشغّل FPV، مدرّب، الحماية من الطائرات المسيّرة (مكافحة المسيّرات). مركز ماكسيم كوندراتييف للتدريب." />
+  <title>مركز ماكسيم كوندراتيف للطيران المسيّر | دورات الطائرات بدون طيار</title>
+  <meta name="description" content="دورات معتمدة في تشغيل الطائرات المسيّرة وطائرات FPV ومكافحة الطائرات المعادية، مع تدريب عملي على أحدث المعدّات وإصدار سجلّ طيران." />
+
+  <!-- Arabic typography: Cairo (display) + Tajawal (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Tajawal', 'system-ui', 'sans-serif'],
-            display: ['Cairo', 'Tajawal', 'sans-serif'],
-          },
           colors: {
-            ink: '#070B16',
-            night: '#0A0F1F',
-            surface: '#0F1626',
-            card: '#131C30',
-            line: '#22314F',
-            sky: {
-              DEFAULT: '#38BDF8',
-              soft: '#7DD3FC',
-              deep: '#0EA5E9',
-            },
+            ink: "#0a0a0b",
+            surface: "#141417",
+            surface2: "#1c1c20",
+            line: "#2a2a30",
             gold: {
-              DEFAULT: '#F5A524',
-              soft: '#FBBF50',
+              DEFAULT: "#e8a33d",
+              soft: "#f0bd6f",
+              deep: "#c4842a",
             },
-            mute: '#93A4C3',
           },
-          boxShadow: {
-            glow: '0 0 0 1px rgba(56,189,248,.15), 0 18px 60px -20px rgba(56,189,248,.35)',
-            goldglow: '0 12px 40px -12px rgba(245,165,36,.55)',
+          fontFamily: {
+            display: ["Cairo", "system-ui", "sans-serif"],
+            body: ["Tajawal", "system-ui", "sans-serif"],
           },
+          fontWeight: {
+            500: "500",
+            600: "600",
+            700: "700",
+            800: "800",
+            900: "900",
+          },
+          maxWidth: { content: "1280px" },
         },
       },
     };
   </script>
+
   <style>
+    /* ---- Design tokens / locks ----
+       Theme lock: single dark theme (near-black ink).
+       Accent lock: one accent = gold (#e8a33d) used across the whole page.
+       Shape lock: buttons = pill, cards = rounded-2xl, inputs = rounded-lg. */
     html { scroll-behavior: smooth; }
-    body { background-color: #070B16; }
-    .grid-bg {
-      background-image:
-        linear-gradient(rgba(56,189,248,.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56,189,248,.06) 1px, transparent 1px);
-      background-size: 46px 46px;
+    body { background-color: #0a0a0b; }
+    ::selection { background: #e8a33d; color: #0a0a0b; }
+
+    /* Fixed grain layer (pointer-events none, off the scroll path) */
+    .grain::after {
+      content: "";
+      position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
-    .radial-glow {
-      background:
-        radial-gradient(60% 55% at 80% 0%, rgba(56,189,248,.18), transparent 60%),
-        radial-gradient(50% 50% at 10% 20%, rgba(14,165,233,.12), transparent 60%);
-    }
-    .gradient-text {
-      background: linear-gradient(110deg, #7DD3FC 0%, #38BDF8 45%, #F5A524 110%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .card-hover { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
-    .card-hover:hover { transform: translateY(-6px); border-color: rgba(56,189,248,.55); box-shadow: 0 24px 60px -24px rgba(56,189,248,.45); }
-    .tab-btn.active { background: linear-gradient(120deg,#0EA5E9,#38BDF8); color:#04111f; box-shadow: 0 10px 30px -10px rgba(56,189,248,.6); }
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
     .reveal.in { opacity: 1; transform: none; }
-    ::selection { background: rgba(56,189,248,.35); }
-    .scrollbar-hide::-webkit-scrollbar { display: none; }
-    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .gold-text { color: #e8a33d; }
+    .hairline { border-color: #2a2a30; }
+
+    /* Marquee (single instance on page) */
+    @keyframes marquee-rtl { from { transform: translateX(0); } to { transform: translateX(50%); } }
+    .marquee-track { animation: marquee-rtl 38s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+
     @media (prefers-reduced-motion: reduce) {
-      .reveal { transition: none; opacity: 1; transform: none; }
       html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+      .marquee-track { animation: none; }
     }
   </style>
 </head>
-<body class="font-sans text-slate-200 antialiased selection:text-white">
 
-  <!-- ===== Top bar ===== -->
-  <div class="hidden md:block border-b border-line/60 bg-ink/80 text-xs text-mute">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
-      <p class="flex items-center gap-2">
-        <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400"></span>
-        نحن متصلون الآن — اسألنا عمّا تريد
-      </p>
-      <div class="flex items-center gap-6">
-        <a href="tel:+74993256778" class="transition hover:text-sky">‎+7 499 325 67 78</a>
-        <a href="mailto:77@cba-avia.ru" class="transition hover:text-sky">77@cba-avia.ru</a>
-        <span class="text-gold">خصم 15% على جميع الدورات</span>
+<body class="grain bg-ink font-body text-zinc-200 antialiased overflow-x-hidden">
+
+  <!-- ============== NAV ============== -->
+  <header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+    <!-- Announcement bar -->
+    <div id="promoBar" class="bg-gold text-ink">
+      <div class="mx-auto max-w-content px-5 lg:px-8">
+        <div class="relative flex items-center justify-center gap-x-6 gap-y-1 flex-wrap py-2 text-[13px] font-700 text-center">
+          <span>خصم 15% على جميع الدورات حتى نهاية يونيو</span>
+          <span class="hidden sm:inline opacity-50">|</span>
+          <span class="hidden sm:inline">تقسيط بدون فوائد متاح</span>
+          <button id="promoClose" aria-label="إغلاق" class="absolute end-4 grid place-items-center h-6 w-6 rounded-full hover:bg-ink/10 transition-colors">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- ===== Header ===== -->
-  <header id="top" class="sticky top-0 z-50 border-b border-line/60 bg-ink/85 backdrop-blur-xl">
-    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
-      <a href="#top" class="flex items-center gap-3">
-        <span class="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-sky-deep to-sky text-ink shadow-glow">
-          <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M5 5l3 3M19 5l-3 3M5 19l3-3M19 19l-3-3M3 5h4M3 5v4M21 5h-4M21 5v4M3 19h4M3 19v-4M21 19h-4M21 19v-4"/></svg>
-        </span>
-        <span class="leading-tight">
-          <span class="block font-display text-base font-800 text-white">مركز التدريب على الطيران المسيّر</span>
-          <span class="block text-[11px] text-mute">ماكسيم كوندراتييف</span>
-        </span>
-      </a>
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <nav class="flex items-center justify-between h-[68px]">
+        <a href="#home" class="flex items-center gap-3 shrink-0">
+          <span class="grid place-items-center h-9 w-9 rounded-lg bg-gold text-ink font-display font-900 text-lg">طـ</span>
+          <span class="font-display font-800 text-white text-base leading-tight">مركز الطيران المسيّر<span class="block text-[11px] font-500 text-zinc-400">ماكسيم كوندراتيف</span></span>
+        </a>
 
-      <nav class="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
-        <a href="#about" class="transition hover:text-sky">عن المركز</a>
-        <a href="#courses" class="transition hover:text-sky">التخصّصات</a>
-        <a href="#industries" class="transition hover:text-sky">المجالات</a>
-        <a href="#founder" class="transition hover:text-sky">المؤسّس</a>
-        <a href="#contact" class="transition hover:text-sky">تواصل معنا</a>
+        <div class="hidden lg:flex items-center gap-8 text-sm text-zinc-300">
+          <a href="#about" class="hover:text-white transition-colors">عن المركز</a>
+          <a href="#courses" class="hover:text-white transition-colors">التخصصات</a>
+          <a href="#industries" class="hover:text-white transition-colors">القطاعات</a>
+          <a href="#fleet" class="hover:text-white transition-colors">المعدّات</a>
+          <a href="#founder" class="hover:text-white transition-colors">المدرّبون</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="#contact" class="hidden sm:inline-flex items-center rounded-full bg-gold px-5 py-2.5 text-sm font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">احجز استشارة مجانية</a>
+          <button id="menuBtn" aria-label="القائمة" class="lg:hidden grid place-items-center h-10 w-10 rounded-lg border hairline text-white">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
       </nav>
-
-      <div class="flex items-center gap-3">
-        <a href="#contact" class="hidden rounded-xl bg-gold px-5 py-2.5 text-sm font-700 text-ink shadow-goldglow transition hover:bg-gold-soft sm:inline-block">احجز استشارة</a>
-        <button id="menuBtn" aria-label="القائمة" class="grid h-10 w-10 place-items-center rounded-lg border border-line text-slate-200 lg:hidden">
-          <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-        </button>
-      </div>
     </div>
-    <div id="mobileMenu" class="hidden border-t border-line/60 bg-night px-6 py-4 lg:hidden">
-      <div class="flex flex-col gap-3 text-sm">
-        <a href="#about" class="rounded-lg px-3 py-2 hover:bg-card">عن المركز</a>
-        <a href="#courses" class="rounded-lg px-3 py-2 hover:bg-card">التخصّصات</a>
-        <a href="#industries" class="rounded-lg px-3 py-2 hover:bg-card">المجالات</a>
-        <a href="#founder" class="rounded-lg px-3 py-2 hover:bg-card">المؤسّس</a>
-        <a href="#contact" class="rounded-lg px-3 py-2 hover:bg-card">تواصل معنا</a>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="lg:hidden hidden border-t hairline bg-ink/95 backdrop-blur-xl">
+      <div class="px-5 py-4 flex flex-col gap-1 text-zinc-200">
+        <a href="#about" class="py-2.5 hover:text-gold">عن المركز</a>
+        <a href="#courses" class="py-2.5 hover:text-gold">التخصصات</a>
+        <a href="#industries" class="py-2.5 hover:text-gold">القطاعات</a>
+        <a href="#fleet" class="py-2.5 hover:text-gold">المعدّات</a>
+        <a href="#founder" class="py-2.5 hover:text-gold">المدرّبون</a>
+        <a href="#contact" class="mt-2 inline-flex justify-center rounded-full bg-gold px-5 py-3 font-700 text-ink">احجز استشارة مجانية</a>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- ===== Hero ===== -->
-    <section class="relative overflow-hidden">
-      <div class="absolute inset-0 grid-bg opacity-60"></div>
-      <div class="absolute inset-0 radial-glow"></div>
-      <div class="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-12 lg:py-28">
-        <div class="lg:col-span-7">
-          <span class="inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-4 py-1.5 text-xs text-sky-soft">
-            <span class="h-1.5 w-1.5 rounded-full bg-sky"></span>
-            ترخيص رسمي لمزاولة النشاط التعليمي — موسكو
-          </span>
-          <h1 class="mt-6 font-display text-4xl font-900 leading-[1.15] text-white sm:text-5xl lg:text-6xl">
-            تعلّم <span class="gradient-text">قيادة الطائرات بدون طيار</span> واحترف مهنة المستقبل
-          </h1>
-          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
-            تدريب ودورات ورفع كفاءة في جميع تخصّصات الطيران المسيّر: مشغّل الطائرات بدون طيار،
-            مشغّل ومُصلّح طائرات FPV، التحليل ومعالجة البيانات، والحماية من الطائرات المسيّرة (مكافحة المسيّرات).
-            مع شهادة معتمدة من النموذج الرسمي ودفتر طيران.
-          </p>
+  <!-- ============== HERO ============== -->
+  <section id="home" class="relative min-h-[100dvh] flex items-end overflow-hidden">
+    <img src="assets/hero-drone.png" alt="طائرات مسيّرة احترافية تحلّق فوق الصحراء عند الغروب" class="absolute inset-0 h-full w-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-l from-ink via-ink/70 to-ink/20"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent"></div>
 
-          <div class="mt-8 flex flex-wrap gap-3">
-            <span class="rounded-lg border border-line bg-card/60 px-3 py-1.5 text-sm text-slate-300">مشغّل المنظومات المسيّرة</span>
-            <span class="rounded-lg border border-line bg-card/60 px-3 py-1.5 text-sm text-slate-300">محلّل بيانات الطائرات المسيّرة</span>
-            <span class="rounded-lg border border-line bg-card/60 px-3 py-1.5 text-sm text-slate-300">مكافحة المسيّرات</span>
-            <span class="rounded-lg border border-line bg-card/60 px-3 py-1.5 text-sm text-slate-300">مشغّل ومُصلّح FPV</span>
-            <span class="rounded-lg border border-line bg-card/60 px-3 py-1.5 text-sm text-slate-300">طاقم المدرّبين</span>
-          </div>
+    <div class="relative z-10 mx-auto max-w-content w-full px-5 lg:px-8 pb-20 pt-28">
+      <div class="max-w-2xl">
+        <span class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-xs font-700 text-gold-soft">المركز الدولي للطيران المسيّر</span>
+        <h1 class="mt-6 font-display font-900 text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl">
+          احترِف الطيران المسيّر<br />
+          من <span class="gold-text">التشغيل</span> إلى <span class="gold-text">الحماية</span>
+        </h1>
+        <p class="mt-5 text-lg text-zinc-300 leading-relaxed max-w-xl">
+          دورات معتمدة في تشغيل الطائرات المسيّرة وطائرات FPV ومكافحتها، مع تدريب عملي على أحدث المعدّات.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="#contact" class="inline-flex items-center rounded-full bg-gold px-7 py-3.5 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">احجز استشارة مجانية</a>
+          <a href="#courses" class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-7 py-3.5 font-700 text-white backdrop-blur-sm transition-all hover:bg-white/10">
+            استعرض التخصصات
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </a>
+        </div>
+        <p class="mt-7 text-sm text-zinc-400">
+          ترخيص تعليمي رسمي رقم Л035-01298-77/00652735 الصادر بتاريخ 23.05.2023
+        </p>
+      </div>
+    </div>
+  </section>
 
-          <div class="mt-9 flex flex-wrap items-center gap-4">
-            <a href="#contact" class="rounded-xl bg-gold px-7 py-3.5 text-base font-700 text-ink shadow-goldglow transition hover:bg-gold-soft">احصل على استشارة مجانية</a>
-            <a href="#courses" class="rounded-xl border border-line bg-surface/60 px-7 py-3.5 text-base font-700 text-white transition hover:border-sky/60 hover:text-sky">استعرض الدورات</a>
-            <span class="text-sm text-mute">تقسيط بدون فوائد</span>
-          </div>
+  <!-- ============== STATS BAND ============== -->
+  <section class="border-y hairline bg-surface/60">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 divide-x divide-x-reverse hairline">
+        <div class="reveal px-6 py-9 text-center lg:text-right">
+          <div class="font-display font-900 text-4xl text-white">2015</div>
+          <div class="mt-1 text-sm text-zinc-400">خبرة تشغيلية منذ عام</div>
+        </div>
+        <div class="reveal px-6 py-9 text-center lg:text-right">
+          <div class="font-display font-900 text-4xl text-white">11<span class="gold-text">+</span></div>
+          <div class="mt-1 text-sm text-zinc-400">تخصصاً في الطيران المسيّر</div>
+        </div>
+        <div class="reveal px-6 py-9 text-center lg:text-right">
+          <div class="font-display font-900 text-4xl text-white">9<span class="gold-text">+</span></div>
+          <div class="mt-1 text-sm text-zinc-400">قطاعات صناعية مخدومة</div>
+        </div>
+        <div class="reveal px-6 py-9 text-center lg:text-right">
+          <div class="font-display font-900 text-4xl text-white">100<span class="gold-text">%</span></div>
+          <div class="mt-1 text-sm text-zinc-400">تدريب عملي على المعدّات</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== PARTNERS / CLIENTS ============== -->
+  <section id="about" class="py-16 lg:py-20">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <p class="reveal text-center text-sm font-700 tracking-wide text-zinc-400">عملاؤنا وشركاؤنا من الشركات الرائدة</p>
+    </div>
+    <div class="marquee reveal mt-9 overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)]">
+      <div class="marquee-track flex w-max items-center gap-4">
+        <!-- set 1 -->
+        <div class="flex items-center gap-4 pe-4">
+          <img src="assets/cl-moscowgov.jpg" alt="حكومة موسكو" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-gazprom.png" alt="غازبروم" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-lukoil.jpeg" alt="لوك أويل" class="h-12 w-auto rounded-lg bg-white/90 px-3 py-2 object-contain" />
+          <img src="assets/cl-transneft.jpg" alt="ترانس نفط" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-rosseti.png" alt="روسيتي" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-nornickel.jpg" alt="نورنيكل" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-rustech.png" alt="روستيك" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-dosaaf.jpg" alt="دوساف روسيا" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-almazantey.png" alt="ألماز أنتي" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-mchs.jpg" alt="مركز الإطفاء والإنقاذ" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-alrosa.jpg" alt="ألروسا" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-traceair.jpg" alt="تريس إير" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-aeroscript.jpg" alt="إيروسكريبت" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-technograd.png" alt="تكنوغراد" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+        </div>
+        <!-- set 2 (duplicate for seamless loop) -->
+        <div class="flex items-center gap-4 pe-4" aria-hidden="true">
+          <img src="assets/cl-moscowgov.jpg" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-gazprom.png" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-lukoil.jpeg" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-3 py-2 object-contain" />
+          <img src="assets/cl-transneft.jpg" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-rosseti.png" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-nornickel.jpg" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-rustech.png" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-dosaaf.jpg" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-almazantey.png" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-mchs.jpg" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-alrosa.jpg" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-traceair.jpg" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-aeroscript.jpg" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+          <img src="assets/cl-technograd.png" alt="" class="h-12 w-auto rounded-lg bg-white/90 px-4 py-2 object-contain" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== AUDIENCE ============== -->
+  <section class="py-20 lg:py-28">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div class="lg:col-span-4 reveal">
+          <h2 class="font-display font-800 text-white text-3xl sm:text-4xl leading-tight">لمن هذه الدورات؟</h2>
+          <p class="mt-4 text-zinc-400 leading-relaxed">نُعِدّ الأفراد والشركات لاكتساب مهارات الطيران المسيّر المطلوبة في سوق العمل والمشاريع الحكومية.</p>
+          <a href="#courses" class="mt-7 inline-flex items-center gap-2 font-700 text-gold hover:text-gold-soft">اكتشف المسارات
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </a>
         </div>
 
-        <div class="lg:col-span-5">
-          <div class="relative overflow-hidden rounded-3xl border border-line shadow-glow">
-            <img src="assets/hero-drone.png" alt="طائرة مسيّرة احترافية فوق منشأة صناعية" class="h-full w-full object-cover" />
-            <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent"></div>
-            <div class="absolute top-4 left-4 rounded-full bg-gold px-3 py-1 text-xs font-700 text-ink shadow-goldglow">شهادة معتمدة + دفتر طيران</div>
-            <div class="absolute bottom-4 right-4 left-4 flex items-center gap-3 rounded-2xl border border-line bg-ink/80 p-3 backdrop-blur">
-              <img src="assets/logbook.png" alt="دفتر طيران مشغّل الطائرات المسيّرة" class="h-14 w-auto rounded-md" />
-              <p class="text-xs leading-relaxed text-slate-300">دفتر طيران رسمي لتوثيق النماذج المُتقَنة وساعات الطيران</p>
+        <div class="lg:col-span-8 divide-y hairline">
+          <div class="reveal flex gap-6 py-7 first:pt-0">
+            <span class="font-display font-900 text-2xl text-gold/70 w-10 shrink-0">01</span>
+            <div>
+              <h3 class="font-display font-700 text-white text-xl">للراغبين في مهنة جديدة</h3>
+              <p class="mt-2 text-zinc-400 leading-relaxed">ابدأ مساراً مهنياً مطلوباً في قطاع الأعمال والقطاع الحكومي، من الصفر وحتى الاحتراف.</p>
+            </div>
+          </div>
+          <div class="reveal flex gap-6 py-7">
+            <span class="font-display font-900 text-2xl text-gold/70 w-10 shrink-0">02</span>
+            <div>
+              <h3 class="font-display font-700 text-white text-xl">للشركات المبتكرة</h3>
+              <p class="mt-2 text-zinc-400 leading-relaxed">دمج تقنيات الطائرات المسيّرة في عمل الشركة وتأهيل فريق متخصّص لحلّ مهامها.</p>
+            </div>
+          </div>
+          <div class="reveal flex gap-6 py-7 last:pb-0">
+            <span class="font-display font-900 text-2xl text-gold/70 w-10 shrink-0">03</span>
+            <div>
+              <h3 class="font-display font-700 text-white text-xl">لرفع الكفاءة المهنية</h3>
+              <p class="mt-2 text-zinc-400 leading-relaxed">طوِّر مهاراتك الحالية واحصل على تخصصات إضافية وشهادات معتمدة في مجال الطيران المسيّر.</p>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Stats band -->
-      <div class="relative border-t border-line/60 bg-night/50">
-        <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden px-6 py-2 lg:grid-cols-4">
-          <div class="p-6 text-center">
-            <p class="font-display text-3xl font-900 text-sky">+2015</p>
-            <p class="mt-1 text-sm text-mute">خبرة تشغيل المنظومات المسيّرة منذ عام</p>
-          </div>
-          <div class="p-6 text-center">
-            <p class="font-display text-3xl font-900 text-gold">8+</p>
-            <p class="mt-1 text-sm text-mute">تخصّصات احترافية معتمدة</p>
-          </div>
-          <div class="p-6 text-center">
-            <p class="font-display text-3xl font-900 text-sky-soft">9</p>
-            <p class="mt-1 text-sm text-mute">مجالات صناعية لحلّ مهامها</p>
-          </div>
-          <div class="p-6 text-center">
-            <p class="font-display text-3xl font-900 text-emerald-400">100%</p>
-            <p class="mt-1 text-sm text-mute">تدريب نظري وعملي على أرض المطار</p>
-          </div>
-        </div>
+  <!-- ============== COURSES (TABBED) ============== -->
+  <section id="courses" class="py-20 lg:py-28 border-t hairline bg-surface/40">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="reveal max-w-2xl">
+        <span class="text-sm font-700 tracking-wide text-gold">التخصصات</span>
+        <h2 class="mt-3 font-display font-800 text-white text-3xl sm:text-4xl lg:text-5xl leading-tight">اختر مسار تدريبك</h2>
+        <p class="mt-4 text-zinc-400 leading-relaxed">برامج متكاملة تغطي كامل منظومة الطيران المسيّر، تنتهي بشهادة معتمدة وسجلّ طيران.</p>
       </div>
-    </section>
 
-    <!-- ===== Clients / Partners ===== -->
-    <section class="border-b border-line/60 bg-ink">
-      <div class="mx-auto max-w-7xl px-6 py-14">
-        <p class="reveal text-center text-sm font-700 uppercase tracking-widest text-sky">عملاؤنا وشركاؤنا</p>
-        <h2 class="reveal mt-3 text-center font-display text-2xl font-900 text-white sm:text-3xl">يثق بنا روّاد القطاعات الصناعية والدفاعية</h2>
-        <div class="reveal mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-gazprom.png" alt="غازبروم نفط" class="max-h-10 w-auto object-contain" /></div>
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-lukoil.jpeg" alt="لوك أويل" class="max-h-12 w-auto object-contain" /></div>
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-transneft.jpg" alt="ترانسنفط" class="max-h-8 w-auto object-contain" /></div>
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-nornickel.jpg" alt="نورنيكل" class="max-h-12 w-auto object-contain" /></div>
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-alrosa.jpg" alt="ألروسا" class="max-h-8 w-auto object-contain" /></div>
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-rosseti.png" alt="روسّيتي يوغ" class="max-h-10 w-auto object-contain" /></div>
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-almazantey.png" alt="ألماز-أنتي" class="max-h-12 w-auto object-contain" /></div>
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-rustech.png" alt="روستيخ إكسبيرت" class="max-h-10 w-auto object-contain" /></div>
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-prin.jpg" alt="برين" class="max-h-12 w-auto object-contain" /></div>
-          <div class="flex items-center justify-center rounded-xl border border-line bg-white p-4"><img src="assets/cl-aeroscript.jpg" alt="آيروسكريبت" class="max-h-10 w-auto object-contain" /></div>
-        </div>
+      <!-- Tabs -->
+      <div class="reveal mt-10 flex flex-wrap gap-2.5" id="courseTabs">
+        <button data-tab="bas" class="course-tab rounded-full px-5 py-2.5 text-sm font-700 transition-all">الطائرات المسيّرة</button>
+        <button data-tab="analyst" class="course-tab rounded-full px-5 py-2.5 text-sm font-700 transition-all">محلّل البيانات</button>
+        <button data-tab="anti" class="course-tab rounded-full px-5 py-2.5 text-sm font-700 transition-all">مكافحة الطائرات</button>
+        <button data-tab="fpv" class="course-tab rounded-full px-5 py-2.5 text-sm font-700 transition-all">طائرات FPV</button>
+        <button data-tab="inst" class="course-tab rounded-full px-5 py-2.5 text-sm font-700 transition-all">المدرّبون</button>
+        <button data-tab="rep" class="course-tab rounded-full px-5 py-2.5 text-sm font-700 transition-all">ترخيص التشويش والرادار</button>
+        <button data-tab="corp" class="course-tab rounded-full px-5 py-2.5 text-sm font-700 transition-all">التدريب المؤسسي</button>
       </div>
-    </section>
 
-    <!-- ===== For whom ===== -->
-    <section id="about" class="border-y border-line/60 bg-night">
-      <div class="mx-auto max-w-7xl px-6 py-20">
-        <div class="reveal mx-auto max-w-2xl text-center">
-          <p class="text-sm font-700 uppercase tracking-widest text-sky">لمن هذه الدورات؟</p>
-          <h2 class="mt-3 font-display text-3xl font-900 text-white sm:text-4xl">نُدرّب جميع تخصّصات الطيران المسيّر</h2>
-          <p class="mt-4 text-slate-300">سواء كنت فرداً يبحث عن مهنة جديدة أو شركة تتبنّى تقنيات مبتكرة.</p>
-        </div>
-        <div class="mt-12 grid gap-6 md:grid-cols-3">
-          <div class="reveal card-hover rounded-2xl border border-line bg-card p-7">
-            <span class="grid h-12 w-12 place-items-center rounded-xl bg-sky/10 text-sky">
-              <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg>
-            </span>
-            <p class="mt-5 text-sm font-700 text-gold">01</p>
-            <h3 class="mt-1 font-display text-xl font-800 text-white">لمن يريد مهنة جديدة</h3>
-            <p class="mt-3 text-slate-300">لكل من يرغب في اكتساب مهنة جديدة ومطلوبة في سوق العمل.</p>
+      <!-- Panels -->
+      <div class="mt-8">
+        <!-- BAS -->
+        <div class="course-panel grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch" data-panel="bas">
+          <div class="relative rounded-2xl overflow-hidden min-h-[320px] order-1 lg:order-none">
+            <img src="assets/course-operator.png" alt="مشغّل طائرة مسيّرة في المطار" class="absolute inset-0 h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
           </div>
-          <div class="reveal card-hover rounded-2xl border border-line bg-card p-7">
-            <span class="grid h-12 w-12 place-items-center rounded-xl bg-sky/10 text-sky">
-              <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3"/></svg>
-            </span>
-            <p class="mt-5 text-sm font-700 text-gold">02</p>
-            <h3 class="mt-1 font-display text-xl font-800 text-white">للشركات</h3>
-            <p class="mt-3 text-slate-300">للشركات التي تُدمج التقنيات المبتكرة في أعمالها وعملياتها.</p>
-          </div>
-          <div class="reveal card-hover rounded-2xl border border-line bg-card p-7">
-            <span class="grid h-12 w-12 place-items-center rounded-xl bg-sky/10 text-sky">
-              <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20v-3M18 20v-9M4 11l5-5 4 3 7-7"/></svg>
-            </span>
-            <p class="mt-5 text-sm font-700 text-gold">03</p>
-            <h3 class="mt-1 font-display text-xl font-800 text-white">لرفع الكفاءة</h3>
-            <p class="mt-3 text-slate-300">لكل من يسعى إلى رفع كفاءته المهنية والتطور في مجاله.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Courses (tabs) ===== -->
-    <section id="courses" class="relative overflow-hidden">
-      <div class="absolute inset-0 grid-bg opacity-30"></div>
-      <div class="relative mx-auto max-w-7xl px-6 py-20">
-        <div class="reveal mx-auto max-w-2xl text-center">
-          <p class="text-sm font-700 uppercase tracking-widest text-sky">اختر دورتك</p>
-          <h2 class="mt-3 font-display text-3xl font-900 text-white sm:text-4xl">برامج التدريب والتخصّصات</h2>
-        </div>
-
-        <!-- Tabs -->
-        <div class="scrollbar-hide mt-10 flex gap-2 overflow-x-auto pb-2">
-          <button class="tab-btn active whitespace-nowrap rounded-xl border border-line px-5 py-2.5 text-sm font-700 text-slate-200 transition" data-tab="bpla">الطائرات المسيّرة</button>
-          <button class="tab-btn whitespace-nowrap rounded-xl border border-line px-5 py-2.5 text-sm font-700 text-slate-200 transition" data-tab="anti">مكافحة المسيّرات</button>
-          <button class="tab-btn whitespace-nowrap rounded-xl border border-line px-5 py-2.5 text-sm font-700 text-slate-200 transition" data-tab="fpv">طائرات FPV</button>
-          <button class="tab-btn whitespace-nowrap rounded-xl border border-line px-5 py-2.5 text-sm font-700 text-slate-200 transition" data-tab="instr">المدرّبون</button>
-          <button class="tab-btn whitespace-nowrap rounded-xl border border-line px-5 py-2.5 text-sm font-700 text-slate-200 transition" data-tab="rep">الحرب الإلكترونية والرادار</button>
-          <button class="tab-btn whitespace-nowrap rounded-xl border border-line px-5 py-2.5 text-sm font-700 text-slate-200 transition" data-tab="corp">التدريب المؤسسي</button>
-        </div>
-
-        <!-- Panels -->
-        <div class="mt-8">
-          <!-- BPLA -->
-          <div class="tab-panel grid gap-6 md:grid-cols-2" data-panel="bpla">
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-xl font-800 text-white">مشغّل المنظومات الجوية المسيّرة</h3>
-              <p class="mt-2 text-sm text-sky-soft">احترف مهنة مطلوبة في قطاعَي الأعمال والدولة.</p>
-              <p class="mt-5 text-sm font-700 text-slate-200">يشمل برنامج الدورة:</p>
-              <ul class="mt-3 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> دراسة أنواع الطائرات المسيّرة ومجالات استخدامها</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> المعرفة بالأنظمة التشريعية ومعايير السلامة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> العمل مع محطات التحكم الأرضية</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> الإجراءات التشغيلية المعيارية لسلامة الطيران</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تدريب عملي في القاعات وعلى أرض المطار</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// شهادة رفع كفاءة + دفتر طيران</p>
-              <a href="#contact" class="mt-5 inline-block rounded-xl bg-sky px-5 py-2.5 text-sm font-700 text-ink transition hover:bg-sky-soft">عرض الأسعار والشروط</a>
-            </article>
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-xl font-800 text-white">محلّل ومعالج بيانات الطائرات المسيّرة</h3>
-              <p class="mt-2 text-sm text-sky-soft">مفيد للمتخصصين في نظم المعلومات الجغرافية (GIS).</p>
-              <p class="mt-5 text-sm font-700 text-slate-200">يشمل برنامج الدورة:</p>
-              <ul class="mt-3 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> جمع وتحليل وتفسير البيانات الملتقطة من الطائرات المسيّرة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> العمل مع البرمجيات المتخصصة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> صقل المهارات عبر حالات عملية من قطاعات مختلفة</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// شهادة معتمدة</p>
-              <a href="#contact" class="mt-5 inline-block rounded-xl bg-sky px-5 py-2.5 text-sm font-700 text-ink transition hover:bg-sky-soft">عرض الأسعار والشروط</a>
-            </article>
-          </div>
-
-          <!-- Anti -->
-          <div class="tab-panel hidden" data-panel="anti">
-            <article class="card-hover mx-auto max-w-3xl rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-xl font-800 text-white">أخصائي مكافحة الطائرات المسيّرة</h3>
-              <p class="mt-2 text-sm text-sky-soft">مفيد للعاملين في حماية المنشآت من الطائرات المسيّرة.</p>
-              <p class="mt-5 text-sm font-700 text-slate-200">يشمل برنامج الدورة:</p>
-              <ul class="mt-3 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> إعداد خبراء في كشف وتحليل ومواجهة الاستخدام غير المصرّح للطائرات المسيّرة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> دراسة التقنيات الحديثة لحماية المنشآت والأفراد</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تدريب عملي على أحدث معدات الكشف والحرب الإلكترونية</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// شهادة معتمدة</p>
-              <a href="#contact" class="mt-5 inline-block rounded-xl bg-sky px-5 py-2.5 text-sm font-700 text-ink transition hover:bg-sky-soft">عرض الأسعار والشروط</a>
-            </article>
-          </div>
-
-          <!-- FPV -->
-          <div class="tab-panel hidden grid gap-6 md:grid-cols-2" data-panel="fpv">
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-xl font-800 text-white">مشغّل طائرة FPV<span class="text-mute">*</span></h3>
-              <p class="mt-2 text-sm text-sky-soft">للتصوير والمسابقات والمهام المتخصصة.</p>
-              <p class="mt-5 text-sm font-700 text-slate-200">يشمل برنامج الدورة:</p>
-              <ul class="mt-3 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> دورة متخصصة في قيادة طائرة FPV للتصوير والسباقات والمهام الخاصة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تدريبات عملية على المحاكيات وعلى أرض المطار</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> مهارات الإصلاح واللحام والضبط وتحديث البرمجيات</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// شهادة رفع كفاءة</p>
-              <a href="#contact" class="mt-5 inline-block rounded-xl bg-sky px-5 py-2.5 text-sm font-700 text-ink transition hover:bg-sky-soft">عرض الأسعار والشروط</a>
-            </article>
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-xl font-800 text-white">فنّي طائرة FPV<span class="text-mute">*</span></h3>
-              <p class="mt-2 text-sm text-sky-soft">مهنة سلمية ومطلوبة في مجال طائرات FPV.</p>
-              <p class="mt-5 text-sm font-700 text-slate-200">يشمل برنامج الدورة:</p>
-              <ul class="mt-3 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> قواعد وأسرار لحام طائرات FPV ومعالجة الأخطاء</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> اختيار المكوّنات وترتيب التجميع والإصلاح</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> برمجة وتحديث الطائرة وضبطها في Betaflight و INAV</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> توصيل وضبط محرّكات السيرفو وتجميع الهوائيات والمرحّلات</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// شهادة رفع كفاءة</p>
-              <a href="#contact" class="mt-5 inline-block rounded-xl bg-sky px-5 py-2.5 text-sm font-700 text-ink transition hover:bg-sky-soft">عرض الأسعار والشروط</a>
-            </article>
-            <p class="md:col-span-2 text-xs text-mute">* FPV — منظور الشخص الأول (الرؤية من الطائرة مباشرة).</p>
-          </div>
-
-          <!-- Instructors -->
-          <div class="tab-panel hidden grid gap-6 md:grid-cols-3" data-panel="instr">
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-lg font-800 text-white">مدرّب مشغّلي الطائرات المسيّرة</h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> برنامج إعداد مدرّبين معتمدين لمشغّلي المسيّرات</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> منهجية التدريس ومعايير السلامة وتنظيم العملية التعليمية</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تدريب ميداني داخل المركز</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// 3 شهادات + دفتر طيران</p>
-              <a href="#contact" class="mt-5 inline-block rounded-xl bg-sky px-5 py-2.5 text-sm font-700 text-ink transition hover:bg-sky-soft">عرض الأسعار</a>
-            </article>
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-lg font-800 text-white">مدرّب مشغّلي طائرات FPV</h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> برنامج إعداد مدرّبين معتمدين لتدريب مشغّلي FPV</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> منهجية التدريس ومعايير السلامة وتنظيم العملية التعليمية</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// 3 شهادات + دفتر طيران</p>
-              <a href="#contact" class="mt-5 inline-block rounded-xl bg-sky px-5 py-2.5 text-sm font-700 text-ink transition hover:bg-sky-soft">عرض الأسعار</a>
-            </article>
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-lg font-800 text-white">مدرّب أخصائيي الحماية من المسيّرات</h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> برنامج إعداد مدرّبين لأخصائيي الحماية من الطائرات المسيّرة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> منهجية التدريس ومعايير السلامة وتنظيم العملية التعليمية</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تدريب ميداني داخل المركز</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// 3 شهادات + دفتر طيران</p>
-              <a href="#contact" class="mt-5 inline-block rounded-xl bg-sky px-5 py-2.5 text-sm font-700 text-ink transition hover:bg-sky-soft">عرض الأسعار</a>
-            </article>
-          </div>
-
-          <!-- REP -->
-          <div class="tab-panel hidden" data-panel="rep">
-            <article class="card-hover mx-auto max-w-3xl rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-xl font-800 text-white">الاستخدام القانوني لوسائل الحرب الإلكترونية والرادار</h3>
-              <p class="mt-2 text-sm text-sky-soft">إعداد وتقديم جميع المستندات اللازمة نيابةً عنك — مرافقة حتى تحقيق النتيجة.</p>
-              <p class="mt-5 text-sm font-700 text-slate-200">إعداد المستندات يشمل:</p>
-              <ul class="mt-3 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> الحصول على قرار اللجنة الحكومية للترددات لوسائل التشويش والرادار</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تنسيق مواقع التركيب وشروط الاستخدام مع الجهات المختصة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> فحص التوافق الكهرومغناطيسي والحصول على التصاريح</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تسجيل وسائل الحرب الإلكترونية والرادار لدى الجهة التنظيمية</li>
-              </ul>
-              <div class="mt-5 rounded-xl border border-gold/40 bg-gold/5 p-4">
-                <p class="text-sm font-700 text-gold">هدية لكل مشارك في الدورة</p>
-                <p class="mt-1 text-sm text-slate-300">دليل منهجي للتحضير لعمليات التحقق من مشروعية استخدام الوسائل الإلكترونية المخصّصة لكشف ومواجهة الطائرات المسيّرة.</p>
-              </div>
-              <a href="#contact" class="mt-5 inline-block rounded-xl bg-sky px-5 py-2.5 text-sm font-700 text-ink transition hover:bg-sky-soft">عرض الأسعار والشروط</a>
-            </article>
-          </div>
-
-          <!-- Corporate -->
-          <div class="tab-panel hidden grid gap-6 md:grid-cols-3" data-panel="corp">
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-lg font-800 text-white">تدريب المشغّلين للشركات</h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> إعادة تأهيل الكوادر لحلّ المهام التطبيقية</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تكييف المنهج وفق طلب الشركة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> نظري وعملي على أساس دورة «مشغّل الطائرات المسيّرة»</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> مجموعة من 5 أشخاص فأكثر</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// شهادة + دفتر طيران</p>
-            </article>
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-lg font-800 text-white">تدريب أخصائيي الحماية للشركات</h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> إعادة تأهيل الكوادر لحماية المنشآت المدنية والبنية التحتية الحيوية</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تكييف المنهج وفق طلب الشركة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> نظري وعملي على أساس دورة الحماية من تهديدات المسيّرات</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> مجموعة من 5 أشخاص فأكثر</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// شهادة</p>
-            </article>
-            <article class="card-hover rounded-2xl border border-line bg-card p-7">
-              <h3 class="font-display text-lg font-800 text-white">تدريب طاقم المدرّبين للشركات</h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li class="flex gap-2"><span class="text-sky">▹</span> إعداد مدرّبين لحلّ مهام الشركة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> تكييف البرامج التدريبية وفق طلب الشركة</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> نظري وعملي في المركز وعلى أرض المطار</li>
-                <li class="flex gap-2"><span class="text-sky">▹</span> مجموعة من 5 أشخاص فأكثر</li>
-              </ul>
-              <p class="mt-5 rounded-lg bg-night/60 p-3 text-xs text-gold">// شهادة + دفتر طيران</p>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Founder ===== -->
-    <section id="founder" class="border-y border-line/60 bg-night">
-      <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-12">
-        <div class="reveal lg:col-span-5">
-          <div class="overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-surface to-card shadow-glow">
-            <img src="assets/classroom.jpg" alt="تدريب عملي في قاعات المركز على المنظومات المسيّرة" class="h-56 w-full object-cover" />
-            <div class="p-8">
-            <h3 class="font-display text-2xl font-900 text-white">ماكسيم كوندراتييف</h3>
-            <p class="text-sm text-sky-soft">المؤسّس والمدرّب الرئيسي للمركز</p>
-            <ul class="mt-5 space-y-2 text-sm text-slate-300">
-              <li class="flex gap-2"><span class="text-gold">●</span> مشغّل وطيّار خارجي ممارس للطائرات المسيّرة</li>
-              <li class="flex gap-2"><span class="text-gold">●</span> مدرّب ومحاضر معتمد في مراكز التدريب الجوي</li>
-              <li class="flex gap-2"><span class="text-gold">●</span> عضو الأكاديمية الهندسية الروسية</li>
+          <div class="rounded-2xl border hairline bg-surface2 p-7 lg:p-9">
+            <h3 class="font-display font-800 text-white text-2xl">مشغّل الطائرات المسيّرة</h3>
+            <p class="mt-3 text-zinc-400">احترِف مهنة مطلوبة في قطاع الأعمال والقطاع الحكومي.</p>
+            <ul class="mt-6 space-y-3 text-sm text-zinc-300">
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> أنواع الطائرات المسيّرة ومجالات استخدامها</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> الأنظمة القانونية ومعايير السلامة الجوية</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> العمل على محطات التحكّم الأرضية</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> إجراءات التشغيل القياسية لسلامة الطيران</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> تدريب عملي في القاعات وعلى المطار</li>
             </ul>
+            <p class="mt-6 text-sm text-gold-soft">بعد التخرّج: شهادة رفع كفاءة وسجلّ طيران</p>
+            <a href="#contact" class="mt-7 inline-flex rounded-full bg-gold px-6 py-3 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">اعرف التفاصيل والأسعار</a>
+          </div>
+        </div>
+
+        <!-- ANALYST -->
+        <div class="course-panel hidden grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch" data-panel="analyst">
+          <div class="rounded-2xl border hairline bg-surface2 p-7 lg:p-9 order-2 lg:order-none">
+            <h3 class="font-display font-800 text-white text-2xl">محلّل بيانات الطائرات المسيّرة</h3>
+            <p class="mt-3 text-zinc-400">مفيد لمتخصّصي نظم المعلومات الجغرافية لتحسين سير العمل وصياغة المهام للمشغّلين.</p>
+            <ul class="mt-6 space-y-3 text-sm text-zinc-300">
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> جمع وتحليل وتفسير البيانات المُلتقطة من الطائرات المسيّرة</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> العمل على البرمجيات المتخصّصة لمعالجة البيانات</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> صقل المهارات على حالات عملية من قطاعات مختلفة</li>
+            </ul>
+            <p class="mt-6 text-sm text-gold-soft">بعد التخرّج: شهادة معتمدة</p>
+            <a href="#contact" class="mt-7 inline-flex rounded-full bg-gold px-6 py-3 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">اعرف التفاصيل والأسعار</a>
+          </div>
+          <div class="relative rounded-2xl overflow-hidden min-h-[320px]">
+            <img src="assets/training-real.jpg" alt="فريق يحلّل بيانات طائرة مسيّرة في قاعة التدريب" class="absolute inset-0 h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
+          </div>
+        </div>
+
+        <!-- ANTI -->
+        <div class="course-panel hidden grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch" data-panel="anti">
+          <div class="rounded-2xl border hairline bg-surface2 p-7 lg:p-9 order-2 lg:order-none">
+            <h3 class="font-display font-800 text-white text-2xl">أخصائي مكافحة الطائرات المسيّرة</h3>
+            <p class="mt-3 text-zinc-400">مفيد للعاملين في حماية المنشآت من الطائرات المعادية.</p>
+            <ul class="mt-6 space-y-3 text-sm text-zinc-300">
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> الكشف عن الطائرات المعادية وتحليلها والتصدّي لها</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> أحدث تقنيات حماية المنشآت والأفراد</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> تدريب عملي على أجهزة الكشف والحرب الإلكترونية</li>
+            </ul>
+            <p class="mt-6 text-sm text-gold-soft">بعد التخرّج: شهادة معتمدة</p>
+            <a href="#contact" class="mt-7 inline-flex rounded-full bg-gold px-6 py-3 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">اعرف التفاصيل والأسعار</a>
+          </div>
+          <div class="relative rounded-2xl overflow-hidden min-h-[320px]">
+            <img src="assets/course-antidrone.png" alt="عملية مكافحة طائرة مسيّرة معادية" class="absolute inset-0 h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
+          </div>
+        </div>
+
+        <!-- FPV -->
+        <div class="course-panel hidden grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch" data-panel="fpv">
+          <div class="relative rounded-2xl overflow-hidden min-h-[320px] order-1 lg:order-none">
+            <img src="assets/course-fpv.png" alt="طائرة FPV سباقية" class="absolute inset-0 h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
+          </div>
+          <div class="rounded-2xl border hairline bg-surface2 p-7 lg:p-9">
+            <h3 class="font-display font-800 text-white text-2xl">مشغّل وفنّي طائرات FPV</h3>
+            <p class="mt-3 text-zinc-400">المنظور من الشخص الأول، للتصوير والسباقات والمهام المتخصّصة.</p>
+            <ul class="mt-6 space-y-3 text-sm text-zinc-300">
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> التحكّم في طائرة FPV للتصوير والسباقات والمهام</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> تدريب عملي على المحاكيات وعلى المطار</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> اللحام واختيار القطع والتجميع والإصلاح</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> الضبط البرمجي عبر Betaflight و INAV</li>
+            </ul>
+            <p class="mt-6 text-sm text-gold-soft">بعد التخرّج: شهادة رفع كفاءة</p>
+            <a href="#contact" class="mt-7 inline-flex rounded-full bg-gold px-6 py-3 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">اعرف التفاصيل والأسعار</a>
+          </div>
+        </div>
+
+        <!-- INST -->
+        <div class="course-panel hidden grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch" data-panel="inst">
+          <div class="rounded-2xl border hairline bg-surface2 p-7 lg:p-9 order-2 lg:order-none">
+            <h3 class="font-display font-800 text-white text-2xl">إعداد المدرّبين</h3>
+            <p class="mt-3 text-zinc-400">برامج لتأهيل مدرّبين معتمدين في كل تخصصات الطيران المسيّر.</p>
+            <ul class="mt-6 space-y-3 text-sm text-zinc-300">
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> مدرّب مشغّلي الطائرات المسيّرة</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> مدرّب مشغّلي طائرات FPV</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> مدرّب أخصائيي مكافحة الطائرات المسيّرة</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> منهجية التدريس وتنظيم العملية التعليمية والتدريب الميداني</li>
+            </ul>
+            <p class="mt-6 text-sm text-gold-soft">بعد التخرّج: ثلاث شهادات وسجلّ طيران</p>
+            <a href="#contact" class="mt-7 inline-flex rounded-full bg-gold px-6 py-3 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">اعرف التفاصيل والأسعار</a>
+          </div>
+          <div class="relative rounded-2xl overflow-hidden min-h-[320px]">
+            <img src="assets/instructor.png" alt="مدرّب طيران مسيّر في قاعة التدريب" class="absolute inset-0 h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
+          </div>
+        </div>
+
+        <!-- REP -->
+        <div class="course-panel hidden grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch" data-panel="rep">
+          <div class="relative rounded-2xl overflow-hidden min-h-[320px] order-1 lg:order-none">
+            <img src="assets/industries.png" alt="مراقبة بنية تحتية حيوية" class="absolute inset-0 h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
+          </div>
+          <div class="rounded-2xl border hairline bg-surface2 p-7 lg:p-9">
+            <h3 class="font-display font-800 text-white text-2xl">الاستخدام القانوني لأنظمة التشويش والرادار</h3>
+            <p class="mt-3 text-zinc-400">تنظيم التشغيل النظامي لأنظمة التشويش الإلكتروني ضد الطائرات المسيّرة.</p>
+            <ul class="mt-6 space-y-3 text-sm text-zinc-300">
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> الحصول على التصاريح اللازمة لتشغيل أنظمة الحماية</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> ضمان قانونية أنظمة الحماية من هجمات الطائرات</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> تنظيم التوافق الكهرومغناطيسي والمراقبة الراديوية</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> إعداد طلبات الترخيص والتسجيل لدى الجهات المختصة</li>
+            </ul>
+            <p class="mt-6 text-sm text-gold-soft">يتضمّن دليلاً منهجياً هديةً لكل مشارك في الدورة</p>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="#contact" class="inline-flex rounded-full bg-gold px-6 py-3 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">اعرف التفاصيل والأسعار</a>
+              <a href="#contact" class="inline-flex rounded-full border hairline px-6 py-3 font-700 text-white transition-all hover:border-gold/50">اشترِ الدليل المنهجي</a>
             </div>
           </div>
         </div>
-        <div class="reveal lg:col-span-7">
-          <p class="text-sm font-700 uppercase tracking-widest text-sky">مؤسّس المركز</p>
-          <h2 class="mt-3 font-display text-3xl font-900 text-white sm:text-4xl">خبرة حقيقية في تطبيق ومواجهة الطائرات المسيّرة</h2>
-          <p class="mt-5 leading-relaxed text-slate-300">
-            خبير في مجال تطبيق ومواجهة الطائرات المسيّرة في القطاعات التجارية ولحلّ مهام الدولة.
-            خرّيج الجامعة العسكرية الهندسية الفضائية، ومرشد وخبير في مسابقات الشركات الناشئة، وفائز سابق بها.
+
+        <!-- CORP -->
+        <div class="course-panel hidden grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch" data-panel="corp">
+          <div class="rounded-2xl border hairline bg-surface2 p-7 lg:p-9 order-2 lg:order-none">
+            <h3 class="font-display font-800 text-white text-2xl">التدريب المؤسسي</h3>
+            <p class="mt-3 text-zinc-400">برامج مخصّصة للشركات التي تدمج الطائرات المسيّرة في عملها.</p>
+            <ul class="mt-6 space-y-3 text-sm text-zinc-300">
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> تأهيل المشغّلين والمدرّبين لحلّ مهام الشركة</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> تأهيل أخصائيي الحماية من الطائرات المسيّرة</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> تكييف المناهج حسب طلب الشركة</li>
+              <li class="flex gap-3"><span class="gold-text mt-1">◆</span> تدريب نظري وعملي للمجموعات من 5 أشخاص فأكثر</li>
+            </ul>
+            <p class="mt-6 text-sm text-gold-soft">بعد التخرّج: شهادة وسجلّ طيران</p>
+            <a href="#contact" class="mt-7 inline-flex rounded-full bg-gold px-6 py-3 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">اعرف التفاصيل والأسعار</a>
+          </div>
+          <div class="relative rounded-2xl overflow-hidden min-h-[320px]">
+            <img src="assets/fleet.png" alt="أسطول من الطائرات المسيّرة الاحترافية" class="absolute inset-0 h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FOUNDER ============== -->
+  <section id="founder" class="py-20 lg:py-28">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div class="lg:col-span-5 reveal">
+          <div class="relative rounded-2xl overflow-hidden">
+            <img src="assets/instructor.png" alt="ماكسيم كوندراتيف، مؤسس المركز والمدرّب الرئيسي" class="w-full h-full object-cover" />
+            <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-ink to-transparent">
+              <p class="font-display font-800 text-white text-xl">ماكسيم كوندراتيف</p>
+              <p class="text-sm text-gold-soft">المؤسس والمدرّب الرئيسي</p>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-7 reveal">
+          <h2 class="font-display font-800 text-white text-3xl sm:text-4xl leading-tight">مؤسس المركز</h2>
+          <p class="mt-5 text-zinc-300 leading-relaxed text-lg">
+            خبير في استخدام الطائرات المسيّرة والتصدّي لها في القطاعات التجارية ولمهام الدولة، ومدرّبٌ معتمد ومحاضرٌ في مراكز التدريب الجوي.
           </p>
-          <div class="mt-7 grid gap-4 sm:grid-cols-3">
-            <div class="rounded-2xl border border-line bg-card p-5">
-              <p class="font-display text-2xl font-900 text-sky">خبير</p>
-              <p class="mt-1 text-sm text-mute">لدى كبرى القنوات التلفزيونية والإذاعية والصحفية</p>
-            </div>
-            <div class="rounded-2xl border border-line bg-card p-5">
-              <p class="font-display text-2xl font-900 text-gold">أكاديمي</p>
-              <p class="mt-1 text-sm text-mute">عضو الأكاديمية الهندسية الروسية</p>
-            </div>
-            <div class="rounded-2xl border border-line bg-card p-5">
-              <p class="font-display text-2xl font-900 text-sky-soft">مرشد</p>
-              <p class="mt-1 text-sm text-mute">في مسابقة «روّاد التقنية» — فائز 2022</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Why us ===== -->
-    <section class="relative overflow-hidden">
-      <div class="absolute inset-0 radial-glow"></div>
-      <div class="relative mx-auto max-w-7xl px-6 py-20">
-        <div class="reveal mx-auto max-w-2xl text-center">
-          <p class="text-sm font-700 uppercase tracking-widest text-sky">لماذا نحن؟</p>
-          <h2 class="mt-3 font-display text-3xl font-900 text-white sm:text-4xl">لماذا يختار المتدرّبون مركزنا؟</h2>
-        </div>
-        <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <div class="reveal card-hover rounded-2xl border border-line bg-card p-7">
-            <p class="font-display text-4xl font-900 text-sky/30">01</p>
-            <p class="mt-2 text-slate-200">خبرة تشغيل المنظومات المسيّرة منذ عام 2015 لحلّ مهام الأعمال والدولة، بقصص نجاح في جميع القطاعات.</p>
-          </div>
-          <div class="reveal card-hover rounded-2xl border border-line bg-card p-7">
-            <p class="font-display text-4xl font-900 text-sky/30">02</p>
-            <p class="mt-2 text-slate-200">أحدث المنظومات الجوية المسيّرة الاحترافية والبرمجيات المتخصصة.</p>
-          </div>
-          <div class="reveal card-hover rounded-2xl border border-line bg-card p-7">
-            <p class="font-display text-4xl font-900 text-sky/30">03</p>
-            <p class="mt-2 text-slate-200">استخدام محاكي طيران للمنظومات المسيّرة لصقل مهارات القيادة في المواقف الطارئة.</p>
-          </div>
-          <div class="reveal card-hover rounded-2xl border border-line bg-card p-7">
-            <p class="font-display text-4xl font-900 text-sky/30">04</p>
-            <p class="mt-2 text-slate-200">محاضرون معتمدون يمتلكون خبرة عملية حقيقية ممتدة لسنوات.</p>
-          </div>
-          <div class="reveal card-hover rounded-2xl border border-line bg-card p-7">
-            <p class="font-display text-4xl font-900 text-sky/30">05</p>
-            <p class="mt-2 text-slate-200">إصدار دفتر طيران لتوثيق النماذج التي أتقنتها وحساب ساعات الطيران.</p>
-          </div>
-          <div class="reveal card-hover rounded-2xl border border-gold/40 bg-gradient-to-br from-gold/10 to-transparent p-7">
-            <p class="font-display text-xl font-900 text-gold">شهادة معتمدة</p>
-            <p class="mt-2 text-slate-200">عند الانتهاء تحصل على شهادة رفع كفاءة من النموذج الرسمي ودفتر طيران.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Industries ===== -->
-    <section id="industries" class="border-y border-line/60 bg-night">
-      <div class="mx-auto max-w-7xl px-6 py-20">
-        <div class="reveal mx-auto max-w-2xl text-center">
-          <p class="text-sm font-700 uppercase tracking-widest text-sky">المجالات</p>
-          <h2 class="mt-3 font-display text-3xl font-900 text-white sm:text-4xl">في أي قطاعات ستتمكّن من حلّ المهام؟</h2>
-        </div>
-        <div id="industriesGrid" class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
-      </div>
-    </section>
-
-    <!-- ===== Internship + drones ===== -->
-    <section class="mx-auto max-w-7xl px-6 py-20">
-      <div class="grid gap-10 lg:grid-cols-2">
-        <div class="reveal overflow-hidden rounded-3xl border border-line bg-card">
-          <img src="assets/field-operator.jpg" alt="مشغّل طائرة مسيّرة أثناء العمل الميداني" class="h-48 w-full object-cover" />
-          <div class="p-8">
-          <h2 class="font-display text-2xl font-900 text-white">كيف تكتسب الخبرة العملية؟</h2>
-          <p class="mt-3 text-slate-300">يساعد التدريب الميداني للخرّيجين على اكتساب خبرة حلّ مهام حقيقية بإشراف خبراء ممارسين.</p>
-          <ul class="mt-6 space-y-3">
-            <li class="flex items-center gap-3 rounded-xl border border-line bg-night/60 p-4 text-sm text-slate-200"><span class="text-sky">▹</span> تدريب ميداني كمشغّل محطة تحكم أرضية ومدرّب</li>
-            <li class="flex items-center gap-3 rounded-xl border border-line bg-night/60 p-4 text-sm text-slate-200"><span class="text-sky">▹</span> تدريب ميداني كمحلّل بيانات</li>
-            <li class="flex items-center gap-3 rounded-xl border border-line bg-night/60 p-4 text-sm text-slate-200"><span class="text-sky">▹</span> تدريب ميداني كأخصائي ومدرّب في مكافحة المسيّرات</li>
+          <ul class="mt-7 grid sm:grid-cols-2 gap-x-8 gap-y-4 text-sm text-zinc-300">
+            <li class="flex gap-3"><span class="gold-text mt-1">◆</span> أكاديمي في أكاديمية الهندسة الروسية</li>
+            <li class="flex gap-3"><span class="gold-text mt-1">◆</span> مشغّل وطيّار خارجي ممارس للطائرات المسيّرة</li>
+            <li class="flex gap-3"><span class="gold-text mt-1">◆</span> خبير لدى كبرى القنوات والصحف</li>
+            <li class="flex gap-3"><span class="gold-text mt-1">◆</span> فائز بمسابقة قادة التقنية في موسكو 2022</li>
           </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== WHY US (BENTO) ============== -->
+  <section class="py-20 lg:py-28 border-t hairline bg-surface/40">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <h2 class="reveal font-display font-800 text-white text-3xl sm:text-4xl lg:text-5xl leading-tight max-w-2xl">لماذا يختاروننا؟</h2>
+
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- big image cell -->
+        <div class="reveal md:row-span-2 relative rounded-2xl overflow-hidden min-h-[300px]">
+          <img src="assets/refinery-real.png" alt="طائرة مسيّرة أثناء مراقبة منشأة صناعية" class="absolute inset-0 h-full w-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+          <div class="absolute bottom-0 p-7">
+            <p class="font-display font-900 text-5xl text-white">2015</p>
+            <p class="mt-1 text-zinc-300">خبرة تشغيلية ميدانية لمهام الأعمال والدولة مع حالات نجاح في جميع القطاعات.</p>
           </div>
         </div>
-        <div class="reveal rounded-3xl border border-line bg-card p-8">
-          <h2 class="font-display text-2xl font-900 text-white">طائرات للتدريبات العملية</h2>
-          <p class="mt-3 text-slate-300">نتدرّب على مجموعة واسعة من المنظومات الاحترافية.</p>
-          <div class="mt-6 grid gap-4 sm:grid-cols-2">
-            <div class="overflow-hidden rounded-xl border border-line bg-gradient-to-br from-night to-surface">
-              <div class="flex h-32 items-center justify-center p-3"><img src="assets/uav-vtol.png" alt="طائرة مسيّرة من النوع الطائري VTOL" class="max-h-full w-auto object-contain" /></div>
-              <div class="border-t border-line p-4">
-                <p class="font-700 text-white">من النوع الطائري و VTOL<span class="text-mute">*</span></p>
-                <p class="mt-1 text-xs text-mute">* الإقلاع والهبوط العمودي</p>
+
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-7">
+          <span class="gold-text font-display font-900 text-2xl">01</span>
+          <h3 class="mt-3 font-display font-700 text-white text-lg">أحدث المعدّات</h3>
+          <p class="mt-2 text-sm text-zinc-400 leading-relaxed">أحدث الطائرات المسيّرة الاحترافية والبرمجيات المتخصّصة.</p>
+        </div>
+
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-7">
+          <span class="gold-text font-display font-900 text-2xl">02</span>
+          <h3 class="mt-3 font-display font-700 text-white text-lg">محاكي طيران</h3>
+          <p class="mt-2 text-sm text-zinc-400 leading-relaxed">التدرّب على القيادة في المواقف الطارئة عبر محاكي طيران احترافي.</p>
+        </div>
+
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-7">
+          <span class="gold-text font-display font-900 text-2xl">03</span>
+          <h3 class="mt-3 font-display font-700 text-white text-lg">مدرّبون معتمدون</h3>
+          <p class="mt-2 text-sm text-zinc-400 leading-relaxed">مدرّبون بخبرة عملية حقيقية تمتدّ لسنوات طويلة.</p>
+        </div>
+
+        <div class="reveal rounded-2xl border border-gold/30 bg-gold/10 p-7">
+          <span class="gold-text font-display font-900 text-2xl">04</span>
+          <h3 class="mt-3 font-display font-700 text-white text-lg">سجلّ طيران</h3>
+          <p class="mt-2 text-sm text-zinc-300 leading-relaxed">إصدار سجلّ طيران لتوثيق النماذج المُتقَنة وساعات الطيران.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== INDUSTRIES ============== -->
+  <section id="industries" class="py-20 lg:py-28">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="reveal max-w-2xl">
+        <h2 class="font-display font-800 text-white text-3xl sm:text-4xl lg:text-5xl leading-tight">قطاعات يمكنك خدمتها</h2>
+        <p class="mt-4 text-zinc-400 leading-relaxed">بعد التخرّج تكون جاهزاً لحلّ مهام واقعية في أهمّ القطاعات الصناعية.</p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-6 hover:border-gold/40 transition-colors">
+          <h3 class="font-display font-700 text-white">النفط والغاز</h3>
+          <p class="mt-2 text-sm text-zinc-400">مراقبة الأنابيب، كشف التسرّبات، توصيل القطع.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-6 hover:border-gold/40 transition-colors">
+          <h3 class="font-display font-700 text-white">الزراعة</h3>
+          <p class="mt-2 text-sm text-zinc-400">جرد الأراضي، رسم خرائط الحقول، مراقبة المحاصيل.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-6 hover:border-gold/40 transition-colors">
+          <h3 class="font-display font-700 text-white">الطاقة</h3>
+          <p class="mt-2 text-sm text-zinc-400">مراقبة خطوط الكهرباء وتقييم حالة شبكات النقل.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-6 hover:border-gold/40 transition-colors">
+          <h3 class="font-display font-700 text-white">التخطيط الحضري</h3>
+          <p class="mt-2 text-sm text-zinc-400">خرائط ثلاثية الأبعاد دقيقة ودعم الأعمال المساحية.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-6 hover:border-gold/40 transition-colors">
+          <h3 class="font-display font-700 text-white">الغابات</h3>
+          <p class="mt-2 text-sm text-zinc-400">حصر الغابات، كشف الحرائق والقطع غير المشروع.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-6 hover:border-gold/40 transition-colors">
+          <h3 class="font-display font-700 text-white">الطرق والسكك</h3>
+          <p class="mt-2 text-sm text-zinc-400">مراقبة أعمال الإنشاء وتقييم الحالة وكشف الأعطال.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-6 hover:border-gold/40 transition-colors">
+          <h3 class="font-display font-700 text-white">الإنشاءات</h3>
+          <p class="mt-2 text-sm text-zinc-400">المساحة والجيولوجيا والأعمال التصميمية والتحضيرية.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-6 hover:border-gold/40 transition-colors">
+          <h3 class="font-display font-700 text-white">البيئة</h3>
+          <p class="mt-2 text-sm text-zinc-400">المراقبة والنمذجة وكشف المكبّات غير القانونية.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-6 hover:border-gold/40 transition-colors">
+          <h3 class="font-display font-700 text-white">الموارد الطبيعية</h3>
+          <p class="mt-2 text-sm text-zinc-400">المسح الجوي المغناطيسي والبحث عن المكامن.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FLEET ============== -->
+  <section id="fleet" class="py-20 lg:py-28 border-t hairline bg-surface/40">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div class="lg:col-span-6 reveal">
+          <h2 class="font-display font-800 text-white text-3xl sm:text-4xl lg:text-5xl leading-tight">أسطول التدريب العملي</h2>
+          <p class="mt-4 text-zinc-400 leading-relaxed">تتدرّب على طائرات مسيّرة احترافية متنوّعة تغطّي مختلف المهام والتطبيقات.</p>
+
+          <div class="mt-8 grid sm:grid-cols-2 gap-4">
+            <div class="rounded-2xl border hairline bg-ink p-5 flex items-center gap-4">
+              <img src="assets/uav-vtol.png" alt="طائرة VTOL ثابتة الجناح" class="h-16 w-24 object-contain" />
+              <div>
+                <h3 class="font-700 text-white text-sm">ثابتة الجناح و VTOL</h3>
+                <p class="text-xs text-zinc-400 mt-1">إقلاع وهبوط عموديان</p>
               </div>
             </div>
-            <div class="overflow-hidden rounded-xl border border-line bg-gradient-to-br from-night to-surface">
-              <div class="flex h-32 items-center justify-center p-3"><img src="assets/uav-multirotor.png" alt="طائرة مسيّرة متعددة المراوح احترافية" class="max-h-full w-auto object-contain" /></div>
-              <div class="border-t border-line p-4">
-                <p class="font-700 text-white">متعددة المراوح الاحترافية</p>
+            <div class="rounded-2xl border hairline bg-ink p-5 flex items-center gap-4">
+              <img src="assets/uav-multirotor.png" alt="طائرة متعددة المراوح احترافية" class="h-16 w-24 object-contain" />
+              <div>
+                <h3 class="font-700 text-white text-sm">متعددة المراوح</h3>
+                <p class="text-xs text-zinc-400 mt-1">طائرات احترافية للمهام الثقيلة</p>
               </div>
             </div>
-            <div class="overflow-hidden rounded-xl border border-line bg-gradient-to-br from-night to-surface">
-              <div class="flex h-32 items-center justify-center p-3"><img src="assets/uav-dji-phantom.png" alt="طائرة DJI Phantom" class="max-h-full w-auto object-contain" /></div>
-              <div class="border-t border-line p-4">
-                <p class="font-700 text-white">DJI سلسلتا PHANTOM و MAVIC</p>
+            <div class="rounded-2xl border hairline bg-ink p-5 flex items-center gap-4">
+              <img src="assets/uav-dji-phantom.png" alt="طائرات DJI من سلسلتي Phantom و Mavic" class="h-16 w-24 object-contain" />
+              <div>
+                <h3 class="font-700 text-white text-sm">DJI Phantom و Mavic</h3>
+                <p class="text-xs text-zinc-400 mt-1">منصّات تصوير احترافية</p>
               </div>
             </div>
-            <div class="overflow-hidden rounded-xl border border-line bg-gradient-to-br from-night to-surface">
-              <div class="flex h-32 items-center justify-center p-3"><img src="assets/uav-dji-mavic.png" alt="طائرة DJI Mavic" class="max-h-full w-auto object-contain" /></div>
-              <div class="border-t border-line p-4">
-                <p class="font-700 text-white">FPV<span class="text-mute">*</span> — الطيران بمنظور أول</p>
-                <p class="mt-1 text-xs text-mute">* الرؤية من الطائرة مباشرة</p>
+            <div class="rounded-2xl border hairline bg-ink p-5 flex items-center gap-4">
+              <img src="assets/course-fpv.png" alt="طائرة FPV للمنظور الأول" class="h-16 w-24 object-cover rounded-lg" />
+              <div>
+                <h3 class="font-700 text-white text-sm">طائرات FPV</h3>
+                <p class="text-xs text-zinc-400 mt-1">طيران بالمنظور من الشخص الأول</p>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="lg:col-span-6 reveal">
+          <div class="relative rounded-2xl overflow-hidden">
+            <img src="assets/fleet.png" alt="مجموعة من الطائرات المسيّرة الاحترافية ومحطات التحكّم" class="w-full object-cover" />
+            <div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl"></div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ===== Contact / Lead form ===== -->
-    <section id="contact" class="relative overflow-hidden border-t border-line/60">
-      <div class="absolute inset-0 grid-bg opacity-30"></div>
-      <div class="absolute inset-0 radial-glow"></div>
-      <div class="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-2">
+  <!-- ============== INTERNSHIP ============== -->
+  <section class="py-20 lg:py-28">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="reveal max-w-2xl">
+        <h2 class="font-display font-800 text-white text-3xl sm:text-4xl leading-tight">كيف تكتسب الخبرة العملية؟</h2>
+        <p class="mt-4 text-zinc-400 leading-relaxed">تساعد فترة التدريب العملي للخرّيجين على حلّ مهام واقعية بإشراف خبراء ممارسين.</p>
+      </div>
+      <div class="mt-12 grid md:grid-cols-3 gap-5">
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-8">
+          <span class="grid place-items-center h-12 w-12 rounded-full bg-gold/15 text-gold font-display font-900">١</span>
+          <h3 class="mt-5 font-display font-700 text-white text-lg">مشغّل محطة تحكّم ومدرّب</h3>
+          <p class="mt-2 text-sm text-zinc-400 leading-relaxed">تدريب ميداني على تشغيل المحطات الأرضية وقيادة المهام الفعلية.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-8">
+          <span class="grid place-items-center h-12 w-12 rounded-full bg-gold/15 text-gold font-display font-900">٢</span>
+          <h3 class="mt-5 font-display font-700 text-white text-lg">محلّل بيانات</h3>
+          <p class="mt-2 text-sm text-zinc-400 leading-relaxed">معالجة وتحليل وتفسير البيانات المجموعة من الطائرات المسيّرة.</p>
+        </div>
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-8">
+          <span class="grid place-items-center h-12 w-12 rounded-full bg-gold/15 text-gold font-display font-900">٣</span>
+          <h3 class="mt-5 font-display font-700 text-white text-lg">أخصائي ومدرّب مكافحة</h3>
+          <p class="mt-2 text-sm text-zinc-400 leading-relaxed">تطبيق عملي على أنظمة الكشف والتصدّي للطائرات المعادية.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== VIDEO / CHANNEL ============== -->
+  <section id="videos" class="py-20 lg:py-28 border-t hairline bg-surface/40">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <a href="https://www.youtube.com/@CBA-MK" target="_blank" rel="noopener" class="reveal group relative rounded-2xl overflow-hidden aspect-video block">
+          <img src="assets/training-real.jpg" alt="لقطات من التدريب العملي في المركز" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <span class="absolute inset-0 bg-ink/45 group-hover:bg-ink/25 transition-colors"></span>
+          <span class="absolute inset-0 grid place-items-center">
+            <span class="grid place-items-center h-20 w-20 rounded-full bg-gold text-ink transition-transform group-hover:scale-110">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+          </span>
+        </a>
         <div class="reveal">
-          <h2 class="font-display text-3xl font-900 text-white sm:text-4xl">اترك بياناتك وسنتواصل معك</h2>
-          <p class="mt-4 text-slate-300">احصل على استشارة مجانية حول الدورة المناسبة لك. متاح تقسيط بدون فوائد.</p>
-          <div class="mt-8 space-y-4 text-sm">
-            <a href="tel:+74993256778" class="flex items-center gap-3 text-slate-200 transition hover:text-sky">
-              <span class="grid h-10 w-10 place-items-center rounded-lg bg-sky/10 text-sky"><svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" stroke="currentColor" stroke-width="1.8"><path d="M3 5l4-1 2 5-3 2a14 14 0 007 7l2-3 5 2-1 4a2 2 0 01-2 2A18 18 0 013 7a2 2 0 010-2z"/></svg></span>
-              ‎+7 499 325 67 78
+          <h2 class="font-display font-800 text-white text-3xl sm:text-4xl lg:text-5xl leading-tight">شاهدنا في العمل</h2>
+          <p class="mt-5 text-zinc-300 leading-relaxed text-lg">على قناتنا الرسمية ستجد لقطات من التدريب العملي ومواد تثقيفية عن تطبيقات الطائرات المسيّرة ومكافحتها.</p>
+          <a href="https://www.youtube.com/@CBA-MK" target="_blank" rel="noopener" class="mt-8 inline-flex items-center gap-2 rounded-full bg-gold px-7 py-3.5 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.97]">
+            <img src="assets/ic-youtube.svg" alt="" class="h-5 w-5" />
+            زوروا قناتنا على يوتيوب
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== CONTACT / LEAD ============== -->
+  <section id="contact" class="py-20 lg:py-28 border-t hairline bg-surface/60">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div class="reveal">
+          <h2 class="font-display font-800 text-white text-3xl sm:text-4xl lg:text-5xl leading-tight">احجز استشارتك المجانية</h2>
+          <p class="mt-5 text-zinc-300 leading-relaxed text-lg">اترك بياناتك وسيتواصل معك أحد مستشارينا لاختيار المسار التدريبي المناسب لك أو لشركتك.</p>
+
+          <div class="mt-10 space-y-5">
+            <a href="tel:+74993256778" class="flex items-center gap-4 group">
+              <span class="grid place-items-center h-11 w-11 rounded-full border hairline text-gold group-hover:border-gold/50 transition-colors">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </span>
+              <span dir="ltr" class="font-700 text-white text-lg">+7 499 325 67 78</span>
             </a>
-            <a href="mailto:77@cba-avia.ru" class="flex items-center gap-3 text-slate-200 transition hover:text-sky">
-              <span class="grid h-10 w-10 place-items-center rounded-lg bg-sky/10 text-sky"><svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
-              77@cba-avia.ru
+            <a href="mailto:77@cba-avia.ru" class="flex items-center gap-4 group">
+              <span class="grid place-items-center h-11 w-11 rounded-full border hairline text-gold group-hover:border-gold/50 transition-colors">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+              </span>
+              <span dir="ltr" class="font-700 text-white text-lg">77@cba-avia.ru</span>
             </a>
-            <p class="flex items-center gap-3 text-slate-200">
-              <span class="grid h-10 w-10 place-items-center rounded-lg bg-sky/10 text-sky"><svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.5-7-11a7 7 0 1114 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-              روسيا، موسكو، شارع ميرا 119، مبنى 321، «تكنوغراد»
-            </p>
+            <div class="flex items-center gap-4">
+              <span class="grid place-items-center h-11 w-11 rounded-full border hairline text-gold">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <span class="text-zinc-300">روسيا، موسكو، شارع ميرا 119، مبنى 321</span>
+            </div>
+          </div>
+
+          <div class="mt-8 flex items-center gap-3">
+            <a href="#" aria-label="تيليغرام" class="grid place-items-center h-11 w-11 rounded-full bg-white/90 hover:bg-white transition-colors"><img src="assets/ic-telegram.png" alt="" class="h-5 w-5 object-contain" /></a>
+            <a href="#" aria-label="VK" class="grid place-items-center h-11 w-11 rounded-full bg-white/90 hover:bg-white transition-colors"><img src="assets/ic-vk.png" alt="" class="h-5 w-5 object-contain" /></a>
+            <a href="#" aria-label="يوتيوب" class="grid place-items-center h-11 w-11 rounded-full bg-white/90 hover:bg-white transition-colors"><img src="assets/ic-youtube.svg" alt="" class="h-5 w-5 object-contain" /></a>
+            <a href="#" aria-label="دزِن" class="grid place-items-center h-11 w-11 rounded-full bg-white/90 hover:bg-white transition-colors"><img src="assets/ic-dzen.png" alt="" class="h-5 w-5 object-contain" /></a>
           </div>
         </div>
 
-        <form class="reveal rounded-3xl border border-line bg-card p-8 shadow-glow" onsubmit="return handleSubmit(event)">
-          <div class="space-y-4">
-            <div>
-              <label class="mb-1.5 block text-sm text-slate-300" for="name">الاسم</label>
-              <input id="name" name="name" type="text" required placeholder="اكتب اسمك" class="w-full rounded-xl border border-line bg-night px-4 py-3 text-white placeholder-mute outline-none transition focus:border-sky" />
+        <!-- Form -->
+        <div class="reveal rounded-2xl border hairline bg-surface2 p-7 lg:p-9">
+          <form id="leadForm" class="grid gap-5" novalidate>
+            <div class="grid gap-2">
+              <label for="name" class="text-sm font-700 text-zinc-200">الاسم</label>
+              <input id="name" name="name" type="text" required placeholder="اكتب اسمك الكامل" class="rounded-lg border hairline bg-ink px-4 py-3 text-white placeholder:text-zinc-500 outline-none focus:border-gold/60 focus:ring-2 focus:ring-gold/20 transition-all" />
             </div>
-            <div>
-              <label class="mb-1.5 block text-sm text-slate-300" for="phone">رقم الهاتف</label>
-              <input id="phone" name="phone" type="tel" required placeholder="+__ ___ ___ ____" dir="ltr" class="w-full rounded-xl border border-line bg-night px-4 py-3 text-right text-white placeholder-mute outline-none transition focus:border-sky" />
+            <div class="grid gap-2">
+              <label for="phone" class="text-sm font-700 text-zinc-200">رقم الهاتف</label>
+              <input id="phone" name="phone" type="tel" required dir="ltr" placeholder="+7 ___ ___ __ __" class="rounded-lg border hairline bg-ink px-4 py-3 text-white placeholder:text-zinc-500 text-right outline-none focus:border-gold/60 focus:ring-2 focus:ring-gold/20 transition-all" />
             </div>
-            <div>
-              <label class="mb-1.5 block text-sm text-slate-300" for="course">الدورة المهتم بها</label>
-              <select id="course" name="course" class="w-full rounded-xl border border-line bg-night px-4 py-3 text-white outline-none transition focus:border-sky">
+            <div class="grid gap-2">
+              <label for="course" class="text-sm font-700 text-zinc-200">المسار المطلوب</label>
+              <select id="course" name="course" class="rounded-lg border hairline bg-ink px-4 py-3 text-white outline-none focus:border-gold/60 focus:ring-2 focus:ring-gold/20 transition-all">
                 <option>مشغّل الطائرات المسيّرة</option>
-                <option>محلّل ومعالج البيانات</option>
-                <option>مكافحة المسيّرات</option>
-                <option>مشغّل / فنّي FPV</option>
-                <option>المدرّبون</option>
+                <option>مكافحة الطائرات المسيّرة</option>
+                <option>طائرات FPV</option>
+                <option>إعداد المدرّبين</option>
+                <option>ترخيص التشويش والرادار</option>
                 <option>التدريب المؤسسي</option>
               </select>
             </div>
-          </div>
-          <button type="submit" class="mt-6 w-full rounded-xl bg-gold px-6 py-3.5 text-base font-700 text-ink shadow-goldglow transition hover:bg-gold-soft">أرسل الطلب</button>
-          <p id="formMsg" class="mt-4 hidden rounded-lg bg-emerald-500/10 p-3 text-center text-sm text-emerald-300"></p>
-          <p class="mt-4 text-center text-xs text-mute">بالضغط على «أرسل الطلب» فإنك توافق على معالجة بياناتك الشخصية وفق سياسة الخصوصية.</p>
-        </form>
+            <button type="submit" class="mt-1 inline-flex justify-center items-center rounded-full bg-gold px-7 py-3.5 font-700 text-ink transition-all hover:bg-gold-soft active:scale-[.98]">أرسل الطلب</button>
+            <p id="formMsg" class="hidden text-sm text-gold-soft text-center">تم استلام طلبك بنجاح، سنتواصل معك قريباً.</p>
+            <p class="text-xs text-zinc-500 leading-relaxed text-center">بالضغط على الزر فإنك توافق على معالجة البيانات الشخصية وفقاً لسياسة الخصوصية.</p>
+          </form>
+        </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <!-- ===== Footer ===== -->
-  <footer class="border-t border-line/60 bg-ink">
-    <div class="mx-auto max-w-7xl px-6 py-14">
-      <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+  <!-- ============== FOOTER ============== -->
+  <footer class="border-t hairline bg-ink py-14">
+    <div class="mx-auto max-w-content px-5 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-10">
         <div>
           <div class="flex items-center gap-3">
-            <span class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-sky-deep to-sky text-ink"><svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M5 5l3 3M19 5l-3 3M5 19l3-3M19 19l-3-3"/></svg></span>
-            <span class="font-display font-800 text-white">مركز التدريب على الطيران المسيّر</span>
+            <span class="grid place-items-center h-9 w-9 rounded-lg bg-gold text-ink font-display font-900 text-lg">طـ</span>
+            <span class="font-display font-800 text-white">مركز الطيران المسيّر</span>
           </div>
-          <p class="mt-4 text-sm leading-relaxed text-mute">مركز ماكسيم كوندراتييف للتدريب على الطيران بدون طيار. تدريب احترافي بشهادات معتمدة.</p>
-          <div class="mt-5 flex items-center gap-3">
-            <a href="https://t.me/CBA_MK" target="_blank" rel="noopener" aria-label="Telegram" class="grid h-10 w-10 place-items-center rounded-lg border border-line bg-card transition hover:border-sky/60"><img src="assets/ic-telegram.png" alt="Telegram" class="h-5 w-5 object-contain" /></a>
-            <a href="https://vk.com/cbamk" target="_blank" rel="noopener" aria-label="VK" class="grid h-10 w-10 place-items-center rounded-lg border border-line bg-card transition hover:border-sky/60"><img src="assets/ic-vk.png" alt="VK" class="h-5 w-5 object-contain" /></a>
-            <a href="https://dzen.ru/operatorbpla_kodratyev" target="_blank" rel="noopener" aria-label="Dzen" class="grid h-10 w-10 place-items-center rounded-lg border border-line bg-card transition hover:border-sky/60"><img src="assets/ic-dzen.png" alt="Dzen" class="h-5 w-5 object-contain" /></a>
-            <a href="https://www.youtube.com/@CBA-MK" target="_blank" rel="noopener" aria-label="YouTube" class="grid h-10 w-10 place-items-center rounded-lg border border-line bg-card transition hover:border-sky/60"><img src="assets/ic-youtube.svg" alt="YouTube" class="h-5 w-5 object-contain" /></a>
-          </div>
+          <p class="mt-4 text-sm text-zinc-400 leading-relaxed max-w-xs">المركز الدولي للطيران المسيّر بإدارة ماكسيم كوندراتيف. تدريب احترافي معتمد في كل تخصصات الطائرات المسيّرة.</p>
         </div>
         <div>
-          <p class="font-700 text-white">التخصّصات</p>
-          <ul class="mt-4 space-y-2 text-sm text-mute">
-            <li><a href="#courses" class="transition hover:text-sky">مشغّل الطائرات المسيّرة</a></li>
-            <li><a href="#courses" class="transition hover:text-sky">مكافحة المسيّرات</a></li>
-            <li><a href="#courses" class="transition hover:text-sky">مشغّل وفنّي FPV</a></li>
-            <li><a href="#courses" class="transition hover:text-sky">المدرّبون</a></li>
+          <h4 class="font-700 text-white">روابط سريعة</h4>
+          <ul class="mt-4 space-y-2.5 text-sm text-zinc-400">
+            <li><a href="#courses" class="hover:text-gold transition-colors">التخصصات</a></li>
+            <li><a href="#industries" class="hover:text-gold transition-colors">القطاعات</a></li>
+            <li><a href="#fleet" class="hover:text-gold transition-colors">المعدّات</a></li>
+            <li><a href="#videos" class="hover:text-gold transition-colors">الفيديو</a></li>
+            <li><a href="#contact" class="hover:text-gold transition-colors">تواصل معنا</a></li>
           </ul>
         </div>
         <div>
-          <p class="font-700 text-white">روابط</p>
-          <ul class="mt-4 space-y-2 text-sm text-mute">
-            <li><a href="#about" class="transition hover:text-sky">عن المركز</a></li>
-            <li><a href="#industries" class="transition hover:text-sky">المجالات</a></li>
-            <li><a href="#founder" class="transition hover:text-sky">المؤسّس</a></li>
-            <li><a href="#contact" class="transition hover:text-sky">تواصل معنا</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="font-700 text-white">تواصل</p>
-          <ul class="mt-4 space-y-2 text-sm text-mute">
-            <li><a href="tel:+74993256778" class="transition hover:text-sky">‎+7 499 325 67 78</a></li>
-            <li><a href="mailto:77@cba-avia.ru" class="transition hover:text-sky">77@cba-avia.ru</a></li>
-            <li>موسكو، شارع ميرا 119، مبنى 321</li>
-          </ul>
+          <h4 class="font-700 text-white">معلومات قانونية</h4>
+          <p class="mt-4 text-sm text-zinc-400 leading-relaxed">
+            ترخيص النشاط التعليمي رقم Л035-01298-77/00652735 الصادر بتاريخ 23.05.2023 عن إدارة التعليم والعلوم بمدينة موسكو.
+          </p>
+          <p class="mt-3 text-xs text-zinc-500" dir="ltr">ИНН 9721195497 · ОГРН 1237700031799</p>
         </div>
       </div>
-      <div class="mt-10 border-t border-line/60 pt-6 text-xs leading-relaxed text-mute">
-        <p>الترخيص رقم Л035-01298-77/00652735 الصادر بتاريخ 23.05.2023 عن إدارة التعليم والعلوم بمدينة موسكو.</p>
-        <p class="mt-2">© جميع الحقوق محفوظة 2026 — مركز ماكسيم كوندراتييف للطيران بدون طيار.</p>
+      <div class="mt-12 pt-8 border-t hairline flex flex-wrap gap-x-6 gap-y-3 text-sm text-zinc-400">
+        <a href="#" class="hover:text-gold transition-colors">العرض العام</a>
+        <a href="#" class="hover:text-gold transition-colors">اتفاقية المستخدم</a>
+        <a href="#" class="hover:text-gold transition-colors">البيانات والمتطلبات</a>
+        <a href="#" class="hover:text-gold transition-colors">الأمان</a>
+        <a href="#" class="hover:text-gold transition-colors">قواعد العرض الترويجي</a>
+        <a href="#" class="hover:text-gold transition-colors">بيانات المؤسسة التعليمية</a>
+      </div>
+      <div class="mt-8 pt-6 border-t hairline flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
+        <p>جميع الحقوق محفوظة 2026</p>
+        <p dir="ltr">+7 499 325 67 78 · 77@cba-avia.ru</p>
       </div>
     </div>
   </footer>
 
   <script>
+    // Header scroll style
+    const nav = document.getElementById("nav");
+    const onScroll = () => {
+      if (window.scrollY > 24) {
+        nav.classList.add("bg-ink/90", "backdrop-blur-xl", "border-b", "hairline");
+      } else {
+        nav.classList.remove("bg-ink/90", "backdrop-blur-xl", "border-b", "hairline");
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
     // Mobile menu
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    menuBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
+    mobileMenu.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => mobileMenu.classList.add("hidden"))
+    );
 
-    // Tabs
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const panels = document.querySelectorAll('.tab-panel');
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const target = btn.dataset.tab;
-        panels.forEach(p => {
-          const match = p.dataset.panel === target;
-          p.classList.toggle('hidden', !match);
-        });
+    // Course tabs
+    const tabs = document.querySelectorAll(".course-tab");
+    const panels = document.querySelectorAll(".course-panel");
+    function setTab(name) {
+      tabs.forEach((t) => {
+        const on = t.dataset.tab === name;
+        t.classList.toggle("bg-gold", on);
+        t.classList.toggle("text-ink", on);
+        t.classList.toggle("bg-surface2", !on);
+        t.classList.toggle("text-zinc-300", !on);
+        t.classList.toggle("border", !on);
+        t.classList.toggle("hairline", !on);
       });
-    });
-
-    // Industries data
-    const industries = [
-      { t: 'النفط والغاز', items: ['مراقبة خطوط الأنابيب', 'كشف التسرّبات', 'توصيل قطع الغيار'] },
-      { t: 'الزراعة', items: ['جرد الأراضي', 'رسم خرائط الحقول', 'مراقبة حالة المحاصيل'] },
-      { t: 'الطاقة', items: ['مراقبة خطوط الكهرباء', 'كشف المباني المخالفة', 'تقييم حالة الخطوط'] },
-      { t: 'التخطيط العمراني والمرافق', items: ['إنشاء خرائط ثلاثية الأبعاد دقيقة', 'دعم أعمال المساحة', 'كشف التعدّيات على الأراضي'] },
-      { t: 'الغابات', items: ['تقدير الغابات', 'كشف الحرائق', 'كشف القطع غير القانوني'] },
-      { t: 'السكك والطرق', items: ['مراقبة أعمال البناء', 'تقييم الحالة', 'كشف الأعطال'] },
-      { t: 'الإنشاءات', items: ['المساحة والجيولوجيا', 'الأعمال التصميمية', 'تحضير مخططات المواقع'] },
-      { t: 'البيئة ومراقبة المكبّات', items: ['المراقبة والنمذجة', 'كشف المكبّات غير القانونية', 'مراقبة الحالة البيئية'] },
-      { t: 'البحث عن الموارد واستخراجها', items: ['المسح الجوي المغناطيسي', 'البحث عن الحقول', 'دعم أعمال المساحة المنجمية'] },
-    ];
-    const grid = document.getElementById('industriesGrid');
-    grid.innerHTML = industries.map(i => `
-      <div class="reveal card-hover rounded-2xl border border-line bg-card p-6">
-        <h3 class="font-display text-lg font-800 text-white">${i.t}</h3>
-        <ul class="mt-4 space-y-2 text-sm text-slate-300">
-          ${i.items.map(x => `<li class="flex gap-2"><span class="text-sky">▹</span> ${x}</li>`).join('')}
-        </ul>
-      </div>`).join('');
-
-    // Form
-    function handleSubmit(e) {
-      e.preventDefault();
-      const msg = document.getElementById('formMsg');
-      msg.textContent = 'شكراً لك! تم استلام طلبك وسنتواصل معك قريباً.';
-      msg.classList.remove('hidden');
-      e.target.reset();
-      return false;
+      panels.forEach((p) => p.classList.toggle("hidden", p.dataset.panel !== name));
     }
+    tabs.forEach((t) => t.addEventListener("click", () => setTab(t.dataset.tab)));
+    setTab("bas");
 
-    // Reveal on scroll
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    // Scroll reveal
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+    // Promo bar close
+    const promoBar = document.getElementById("promoBar");
+    document.getElementById("promoClose").addEventListener("click", () => promoBar.remove());
+
+    // Lead form (demo, no backend)
+    const form = document.getElementById("leadForm");
+    const msg = document.getElementById("formMsg");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      msg.classList.remove("hidden");
+      form.reset();
+    });
   </script>
 </body>
 </html>
